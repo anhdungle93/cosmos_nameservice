@@ -59,3 +59,19 @@ func queryWhois(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Ke
 	return res, nil
 }
 
+func queryNames(ctx sdk.Context, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
+	var namesList types.QueryResNames
+
+	iterator := keeper.GetNamesIterator(ctx)
+
+	for ; iterator.Valid(); iterator.Next() {
+		namesList = append(namesList, string(iterator.Key()))
+	}
+
+	res, err := codec.MarshalJSONIndent(keeper.cdc, namesList)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+	}
+
+	return res, nil
+}
