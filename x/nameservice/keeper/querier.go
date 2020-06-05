@@ -12,13 +12,22 @@ import (
 	"github.com/anhdungle/namespace/x/nameservice/types"
 )
 
+// query endpoints supported by the nameservice Querier
+const {
+	QueryResolve = "resolve"
+	QueryWhois = "whois"
+	QueryNames = "names"
+}
 // NewQuerier creates a new querier for nameservice clients.
 func NewQuerier(k Keeper) sdk.Querier {
 	return func(ctx sdk.Context, path []string, req abci.RequestQuery) ([]byte, error) {
 		switch path[0] {
-		case types.QueryParams:
-			return queryParams(ctx, k)
-			// TODO: Put the modules query routes
+		case QueryResolve:
+			return queryResolve(ctx, path[1:], req, keeper)
+		case QueryWhois:
+			return queryWhois(ctx, path[1:], req, keeper)
+		case QueryNames:
+			return queryNames(ctx, req, keeper)
 		default:
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "unknown nameservice query endpoint")
 		}
