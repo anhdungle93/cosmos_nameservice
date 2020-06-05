@@ -48,3 +48,14 @@ func queryResolve(ctx sdk.Context, path []string, req abci.RequestQuery, keeper 
 	return res, nil
 }
 
+func queryWhois(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
+	whois := keeper.GetWhois(ctx, path[0])
+
+	res, err := codec.MarshalJSONIndent(keeper.cdc, whois)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+	}
+
+	return res, nil
+}
+
