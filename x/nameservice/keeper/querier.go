@@ -34,16 +34,17 @@ func NewQuerier(k Keeper) sdk.Querier {
 	}
 }
 
-func queryParams(ctx sdk.Context, k Keeper) ([]byte, error) {
-	params := k.GetParams(ctx)
+func queryResolve(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
+	value := keeper.ResolveName(ctx, path[0])
 
-	res, err := codec.MarshalJSONIndent(types.ModuleCdc, params)
+	if value == "" {
+		return []bytes{}, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "could not resolve name")
+	}
+
+	res, err := codec.MarshalJSONIndent(keeper.cdc, types.QueryResResolve{Value: value})
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
 	}
-
 	return res, nil
 }
 
-// TODO: Add the modules query functions
-// They will be similar to the above one: queryParams()
