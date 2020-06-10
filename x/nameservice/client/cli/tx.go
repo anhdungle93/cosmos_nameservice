@@ -1,19 +1,19 @@
 package cli
 
 import (
-	"fmt"
 	"bufio"
+	"fmt"
 
 	"github.com/spf13/cobra"
 
+	"github.com/anhdungle/namespace/x/nameservice/types"
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/context"
+	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
-	"github.com/anhdungle/namespace/x/nameservice/types"
 )
 
 // GetTxCmd returns the transaction commands for this module
@@ -27,8 +27,8 @@ func GetTxCmd(cdc *codec.Codec) *cobra.Command {
 	}
 
 	nameserviceTxCmd.AddCommand(flags.PostCommands(
-		// TODO: Add tx based commands
-		// GetCmd<Action>(cdc)
+	// TODO: Add tx based commands
+	// GetCmd<Action>(cdc)
 	)...)
 
 	return nameserviceTxCmd
